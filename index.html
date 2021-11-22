@@ -236,9 +236,71 @@
 
             function onChangeMorph() {
                 //此程式只有eye_happy_wink_left能控制
-                const key = keys[14];
-                const value = controls[key];
-                mesh.morphTargetInfluences[0] = value;
+                //const key = keys[14];
+                //const value = controls[key];
+                //mesh.morphTargetInfluences[0] = value;
+                if(modelfile_num == 0) {
+                    mesh.morphTargetInfluences[0] = controls[keys[4]];
+                    mesh.morphTargetInfluences[1] = controls[keys[0]];
+                    mesh.morphTargetInfluences[2] = controls[keys[6]];
+                    mesh.morphTargetInfluences[3] = controls[keys[2]];
+                    mesh.morphTargetInfluences[4] = controls[keys[10]];
+                    mesh.morphTargetInfluences[16] = controls[keys[8]];
+                    mesh.morphTargetInfluences[17] = controls[keys[9]];
+                    mesh.morphTargetInfluences[35] = controls[keys[12]];
+                    mesh.morphTargetInfluences[36] = controls[keys[13]];
+                    mesh.morphTargetInfluences[37] = controls[keys[14]];
+                    mesh.morphTargetInfluences[42] = controls[keys[18]];
+                    mesh.morphTargetInfluences[46] = controls[keys[22]];
+                    mesh.morphTargetInfluences[56] = controls[keys[16]];
+                    mesh.morphTargetInfluences[86] = controls[keys[20]];
+                    mesh.morphTargetInfluences[92] = controls[keys[24]];
+                    mesh.morphTargetInfluences[111] = controls[keys[26]];
+                    mesh.morphTargetInfluences[112] = controls[keys[27]];
+                    mesh.morphTargetInfluences[113] = controls[keys[28]];
+                    mesh.morphTargetInfluences[114] = controls[keys[29]];
+                    mesh.morphTargetInfluences[115] = controls[keys[30]];
+                    mesh.morphTargetInfluences[125] = controls[keys[31]];
+                    mesh.morphTargetInfluences[130] = controls[keys[32]];
+                    mesh.morphTargetInfluences[185] = controls[keys[33]];
+                    mesh.morphTargetInfluences[186] = controls[keys[35]];
+                    mesh.morphTargetInfluences[187] = controls[keys[34]];
+                    mesh.morphTargetInfluences[188] = controls[keys[36]];
+                }
+                else if(modelfile_num == 1) {
+                    mesh.morphTargetInfluences[0] = controls[keys[14]];
+                    mesh.morphTargetInfluences[2] = controls[keys[12]];
+                    mesh.morphTargetInfluences[3] = controls[keys[13]];
+                    mesh.morphTargetInfluences[6] = controls[keys[22]];
+                    mesh.morphTargetInfluences[8] = controls[keys[18]];
+                    mesh.morphTargetInfluences[9] = controls[keys[26]];
+                    mesh.morphTargetInfluences[10] = controls[keys[27]];
+                    mesh.morphTargetInfluences[11] = controls[keys[28]];
+                    mesh.morphTargetInfluences[12] = controls[keys[29]];
+                    mesh.morphTargetInfluences[13] = controls[keys[30]];
+                    mesh.morphTargetInfluences[17] = controls[keys[31]];
+                    mesh.morphTargetInfluences[19] = controls[keys[35]];
+                    mesh.morphTargetInfluences[22] = controls[keys[6]];
+                    mesh.morphTargetInfluences[23] = controls[keys[10]];
+                    mesh.morphTargetInfluences[24] = controls[keys[0]];
+                    mesh.morphTargetInfluences[25] = controls[keys[2]];
+                    mesh.morphTargetInfluences[30] = controls[keys[24]];
+                }
+                else {
+                    mesh.morphTargetInfluences[0] = controls[keys[12]];
+                    mesh.morphTargetInfluences[1] = controls[keys[13]];
+                    mesh.morphTargetInfluences[2] = controls[keys[14]];
+                    mesh.morphTargetInfluences[6] = controls[keys[18]];
+                    mesh.morphTargetInfluences[7] = controls[keys[26]];
+                    mesh.morphTargetInfluences[8] = controls[keys[27]];
+                    mesh.morphTargetInfluences[9] = controls[keys[28]];
+                    mesh.morphTargetInfluences[10] = controls[keys[29]];
+                    mesh.morphTargetInfluences[11] = controls[keys[30]];
+                    mesh.morphTargetInfluences[14] = controls[keys[10]];
+                    mesh.morphTargetInfluences[16] = controls[keys[8]];
+                    mesh.morphTargetInfluences[18] = controls[keys[2]];
+                    mesh.morphTargetInfluences[19] = controls[keys[0]];
+                }
             }
 
             initControls();
@@ -266,7 +328,7 @@
 
         function getJSON() {
             var xhr = new XMLHttpRequest()
-            var url = 'model_data.json';
+            var url = './model_data.json';
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     data_json = JSON.parse(this.responseText);
