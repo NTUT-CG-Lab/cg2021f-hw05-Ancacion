@@ -222,16 +222,26 @@
             function initMorphs() {
                 //此程式只有eye_happy_wink_left能控制
                 let i = 0;
+                let before = -1;
                 for (const key in standardlist) {
-                    if (i != 14) {
+                    if ((data_json.modellist[modelfile_num][key] == -1 || before == data_json.modellist[modelfile_num][key]) && i < 37) {  //不可控的選項
+                        morphs.add(controls, key, 0.0, 0.0, 0.01).onChange(onChangeMorph);
+                    }
+                    else if(i < 37) {
+                        morphs.add(controls, key, 0.0, 1.0, 0.01).onChange(onChangeMorph);
+                    }
+                    else {
+                        morphs.add(controls, key, -1.0, 1.0, 0.01).onChange(onChangeMorph);
+                    }
+                    before = data_json.modellist[modelfile_num][key];
+                    /*if (i != 14) {
                         morphs.add(controls, key, 0.0, 0.0, 0.01).onChange(onChangeMorph);
                     }
                     else {
                         morphs.add(controls, key, 0.0, 1.0, 0.01).onChange(onChangeMorph);
-                    }
+                    }*/
                     i++;
                 }
-
             }
 
             function onChangeMorph() {
@@ -239,7 +249,7 @@
                 //const key = keys[14];
                 //const value = controls[key];
                 //mesh.morphTargetInfluences[0] = value;
-                if(modelfile_num == 0) {
+                if(modelfile_num == 0) {  //左邊為模型內建的數值, 右邊為GUI的控制順序
                     mesh.morphTargetInfluences[0] = controls[keys[4]];
                     mesh.morphTargetInfluences[1] = controls[keys[0]];
                     mesh.morphTargetInfluences[2] = controls[keys[6]];
@@ -301,6 +311,42 @@
                     mesh.morphTargetInfluences[18] = controls[keys[2]];
                     mesh.morphTargetInfluences[19] = controls[keys[0]];
                 }
+                //rotation.x = ((iris_rotation_x - a) / (b - a)) * (max - min) + min
+                /*let a = -1, b = 1;
+                if(controls[keys[37]] > 0) {
+                    let a37 = 0, b37 = 1;
+                    mesh.skeleton.bones[leye_index].rotation.x = ((controls[keys[37]] - a37) / (b37 - a37)) * (max - min) + min;
+                }*/
+                mesh.skeleton.bones[leye_index].rotation.x = onChangeIrisMorph(controls[keys[37]], data_json.modellist[modelfile_num].LXPA, data_json.modellist[modelfile_num].LXNA);
+                mesh.skeleton.bones[leye_index].rotation.y = onChangeIrisMorph(controls[keys[38]], data_json.modellist[modelfile_num].LYPA, data_json.modellist[modelfile_num].LYNA);
+                mesh.skeleton.bones[reye_index].rotation.x = onChangeIrisMorph(controls[keys[37]], data_json.modellist[modelfile_num].RXPA, data_json.modellist[modelfile_num].RXNA);
+                mesh.skeleton.bones[reye_index].rotation.y = onChangeIrisMorph(controls[keys[38]], data_json.modellist[modelfile_num].RYPA, data_json.modellist[modelfile_num].RYNA);
+
+                mesh.skeleton.bones[head_index].rotation.x = onChangeIrisMorph(controls[keys[39]], 15, -15);
+                mesh.skeleton.bones[head_index].rotation.y = onChangeIrisMorph(controls[keys[40]], 15, -15);
+                mesh.skeleton.bones[head_index].rotation.z = onChangeIrisMorph(controls[keys[41]], 15, -15);
+                /*onChangeIrisMorph(controls[keys[38]]);
+                onChangeIrisMorph(controls[keys[39]]);
+                onChangeIrisMorph(controls[keys[40]]);
+                onChangeIrisMorph(controls[keys[41]]);*/
+            }
+
+            function onChangeIrisMorph(controlsKeys, max, min) {
+                max = THREE.MathUtils.degToRad(max);
+                min = THREE.MathUtils.degToRad(min);
+                if(controlsKeys > 0) {
+                    let a0 = -1, b0 = 0;
+                    return ((controlsKeys - a0) * (0 - min) / (b0 - a0)) + min;
+                    //return ((controlsKeys - a0) / (b0 - a0)) * (0 - min) + min;
+                }
+                else if(controlsKeys == 0) {
+                    return 0;
+                }
+                else if(controlsKeys < 0) {
+                    let a1 = 0, b1 = 1;
+                    return ((controlsKeys - a1) * (max - 0) / (b1 - a1)) + 0;
+                    //return ((controlsKeys - a1) / (b1 - a1)) * (max - 0) + 0;
+                }
             }
 
             initControls();
@@ -334,6 +380,9 @@
                     data_json = JSON.parse(this.responseText);
                     data_json_length = Object.keys(data_json.modellist).length - 1;
                     console.log(data_json);
+                    //for (const key in standardlist) {
+                    //    console.log(data_json.modellist[modelfile_num][key]);
+                    //}
                     init();
                 }
             };
@@ -388,7 +437,7 @@
 
                 mesh = object;
                 mesh.position.y = - 10;
-
+                //console.log(data_json.modellist[modelfile_num]);
                 scene.add(mesh);
 
                 findeye_index();
